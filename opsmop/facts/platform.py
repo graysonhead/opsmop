@@ -138,6 +138,12 @@ class PlatformFacts(Facts):
             return Apt
         return None
 
+    def default_network_manager(self):
+        distro = self.os_distribution()
+        if distro in ['Fedora', 'CentOS Linux', 'Red Hat Linux']:
+            from opsmop.providers.network.sysconfig import SysConfig
+            return SysConfig
+
     def default_service_manager(self):
         # patches welcome! feel free to update this for your distribution        
         distro = self.os_distribution()
