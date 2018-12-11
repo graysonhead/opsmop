@@ -20,7 +20,7 @@ GET_INTERFACES = "cat /proc/net/dev"
 
 class Network(Provider):
 
-    def get_interface_config(self):
+    def get_interface_config(self, interface):
         raise NotImplementedError
 
     def plan(self):
@@ -35,7 +35,7 @@ class Network(Provider):
                     self.needs('create_interface_{}'.format(interface.name))
             else:
                 raise ValidationError(msg="Interface {} does not exist".format(interface.name))
-        if self.actions_planned.__len__() > 0:
+        if self.actions_planned.__len__() > 0 and self.auto_reload:
             self.needs('reload_service')
 
     def _get_valid_interfaces(self):

@@ -138,7 +138,9 @@ class SysConfig(Network):
                 value = 'NO'
             if value is not None:
                 interface_config_lines.append("{k}={v}\n".format(k=v, v=value))
-        self.echo(msg="New Interface Config: {}".format("\n".join(interface_config_lines)))
+        self.echo(msg="New Interface Config:")
+        for line in interface_config_lines:
+            self.echo(msg=line.strip('\n'))
         with open(INTERFACE_FILE_PREFIX.format(interface.name), 'w+') as file:
             file.writelines(interface_config_lines)
         return True
