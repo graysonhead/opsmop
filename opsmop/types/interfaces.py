@@ -16,6 +16,7 @@ from opsmop.core.field import Field
 from opsmop.core.fields import Fields
 from opsmop.types.interface import Interface
 from opsmop.types.type import Type
+from opsmop.core.errors import ValidationError
 
 
 class Interfaces(Type):
@@ -35,7 +36,12 @@ class Interfaces(Type):
             self.interfaces.append(interface)
         elif isinstance(interface, list):
             for interf in interface:
-                self.interfaces.append(interf)
+                if isinstance(interf, Interface):
+                    self.interfaces.append(interf)
+                else:
+                    raise ValidationError(msg="You can only add interface objects to an interfaces type")
+        else:
+            raise ValidationError(msg="You can only add interface objects to an interfaces type")
 
     def get_provider(self, method):
         if method == 'sysconfig':

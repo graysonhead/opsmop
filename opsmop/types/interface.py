@@ -66,9 +66,9 @@ class Interface(InterfaceAbstract):
             mtu=Field(kind=int, default=1500, help="Configures interface maximum frame size."),
             # Not Implemented window yet
             # TODO: Process DNS parameter
-            # dns=Field(kind=list, default=None,
-            #           help="Accepts up to two DNS servers. Using this option on multiple interfaces in the same "
-            #                "system may produce unexpected results"),
+            dns=Field(kind=list, default=None,
+                      help="Accepts up to two DNS servers. Using this option on multiple interfaces in the same "
+                           "system may produce unexpected results"),
             # Not Implemented yet scope
             # Not implemented srcaddr
             mac_addr=Field(kind=str, default=None, help="Overrides the mac address of the interface"),
