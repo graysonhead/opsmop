@@ -57,6 +57,9 @@ class EventStreamCallbacks(BaseCallbacks):
         self.event('command_echo', provider=provider, data=echo)
 
     def on_echo(self, provider, echo):
+        if isinstance(echo, list):
+            for line in echo:
+                self.on_echo(provider, line)
         self.event('echo', provider=provider, data=echo)
 
     def on_complete(self, policy):

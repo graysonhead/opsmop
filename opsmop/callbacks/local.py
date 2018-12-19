@@ -56,10 +56,14 @@ class LocalCliCallbacks(BaseCallbacks):
         self.i5("| %s" % echo.rstrip())
 
     def on_echo(self, provider, echo):
-        if not provider or not provider.very_quiet():
-            self.i5("| %s" % echo)
+        if isinstance(echo, list):
+            for line in echo:
+                self.on_echo(provider, line)
         else:
-            self.i3(echo)
+            if not provider or not provider.very_quiet():
+                self.i5("| %s" % echo)
+            else:
+                self.i3(echo)
 
     def on_execute_command(self, provider, command):
         if command.echo:
