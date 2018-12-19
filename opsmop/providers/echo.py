@@ -32,13 +32,18 @@ class Echo(Provider):
         return True
 
     def apply(self):
-        
-        self.cowsay = shutil.which('cowsay')
-        txt = Template.from_string(self.msg, self.resource)
 
-        if self.cowsay and os.environ.get('MOO'):
-            cmd = COWSAY.format(msg=txt)
-            txt = self.run(cmd, echo=False)
-        self.echo(txt)
+        if self.msg_list and not self.msg:
+            lines = []
+            for line in self.msg_list:
+                lines.append(Template.from_string(line, self.resource))
+            self.echo(lines)
+        else:
+            self.cowsay = shutil.which('cowsay')
+            txt = Template.from_string(self.msg, self.resource)
 
+            if self.cowsay and os.environ.get('MOO'):
+                cmd = COWSAY.format(msg=txt)
+                txt = self.run(cmd, echo=False)
+            self.echo(txt)
         return self.ok()

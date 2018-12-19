@@ -19,8 +19,8 @@ from opsmop.types.type import Type
 
 class Echo(Type):
 
-    def __init__(self, msg, *args, **kwargs):
-        self.setup(msg=msg, **kwargs)
+    def __init__(self, *args, **kwargs):
+        self.setup(**kwargs)
 
     def quiet(self):
         return True
@@ -28,7 +28,8 @@ class Echo(Type):
     def fields(self):
         return Fields(
             self,
-            msg = Field(kind=str, allow_none=False, help="string to print")
+            msg = Field(kind=str, allow_none=True, default=None, help="string to print"),
+            msg_list = Field(kind=list, allow_none=True, default=None, help="List of strings to print")
         )
 
     def validate(self):
