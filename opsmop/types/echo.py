@@ -15,6 +15,7 @@
 from opsmop.core.field import Field
 from opsmop.core.fields import Fields
 from opsmop.types.type import Type
+from opsmop.core.errors import ValidationError
 
 
 class Echo(Type):
@@ -28,12 +29,17 @@ class Echo(Type):
     def fields(self):
         return Fields(
             self,
-            msg = Field(kind=str, allow_none=True, default=None, help="string to print"),
-            msg_list = Field(kind=list, allow_none=True, default=None, help="List of strings to print")
+            msg = Field(allow_none=False, help="String, or list of strings to print"),
         )
 
     def validate(self):
-        pass
+        # Make sure that msg is either a list or string
+        if type(self.msg) not in [list, str]:
+            raise ValidationError(msg="msg parameter must contain either a string or list of strings.")
+        # If its a list, make sure the list contains only strings
+        elif type(self.msg) is str:
+            if not all(map(lambda x: isinstance(x, str), self.msg)):
+                raise ValidationError(msg="msg list must contain only strings.")
 
     def default_provider(self):
         from opsmop.providers.echo import Echo

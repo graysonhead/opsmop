@@ -33,9 +33,9 @@ class Echo(Provider):
 
     def apply(self):
 
-        if self.msg_list and not self.msg:
+        if isinstance(self.msg, list):
             lines = []
-            for line in self.msg_list:
+            for line in self.msg:
                 lines.append(Template.from_string(line, self.resource))
             self.echo(lines)
         else:
