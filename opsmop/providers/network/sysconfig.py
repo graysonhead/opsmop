@@ -130,10 +130,12 @@ class SysConfig(LinuxNetwork):
                 return False
         # Get a new instance of Interface depending on type
         # TODO: Improve the method used to determine interface type when more types are added
-        if 'type' in options:
-            if options['TYPE'].lower() == 'ethernet' or 'type' not in options:
-                interface_obj = Interface(device=options['device'])
+        if 'TYPE' in options:
+            if options['TYPE'].lower() == 'ethernet':
+                interface_obj = Interface(device=options['DEVICE'])
                 self._populate_interface_attributes_from_file(interface_obj, options)
+            else:
+                self.error(f"The type {options['TYPE']} is not currently supported by this module")
         # If type isn't specified, its probably an Ethernet device
         else:
             interface_obj = Interface(device=options['DEVICE'])
